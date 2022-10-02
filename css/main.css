@@ -1,0 +1,43 @@
+body{
+    overflow: scroll;
+}
+body div {
+    width: 5000px;height:5000px; position:absolute;z-index: 1;margin: 0;padding: 0; top: 0;bottom: 0;right: 0;left: 0;
+}
+body #brushs{
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    position: fixed;
+    z-index:999;
+    background-color:blueviolet;
+    color:white;
+    width: 120px;
+    height: 180px;
+    padding: 0;
+    margin: 0;
+    top: 50px;
+    left: 50px;
+}
+body #brushs #button_brushs_grab{
+    cursor: grab;
+}
+body #brushs #button_brushs_grab:left{
+    cursor: grabbing;
+}
+body #brushs ul{
+    margin:0;
+    padding: 0;
+}
+body #brushs ul li{
+    margin:0; 
+    padding: 0; 
+    list-style:none;
+    font-size: 2rem;
+}
+body #brushs ul li:hover{
+    cursor: pointer;
+}

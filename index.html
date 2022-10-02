@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/main.css">
+    <title>Document</title>
+</head>
+<body>
+    <div></div>
+    <span id=coords style="position: absolute; top: 510px;">...</span>
+    <section id="colors" style="position: fixed; z-index: 999;">
+        <input type="range" id="thickness" name="points" min="1" max="100">
+        <input type="color" id="color" name="color">
+    </section>
+    <section id="brushs">
+        <span id="button_brushs_grab">Grab me</span>
+        <ul>
+            <li><a id="regular">Reg</a></li>
+            <li><a id="exponential">Exp</a></li>
+            <li><a id="move">Move(dont work)</a></li>
+        </ul>
+    </section>
+    <div id="zoom_canvas"><canvas id="lets_draw" width="100" height="100" style="position: relative;z-index:2;"></canvas></div>
+</body>
+<script src="./scripts/window.js"></script>
+<script src="./scripts/brushs.js"></script>
+<script src="./scripts/draw.js"></script>
+<script src="./scripts/colors.js"></script>
+</html>
