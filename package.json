@@ -1,0 +1,28 @@
+{
+  "name": "lets_draw_together",
+  "version": "1.0.0",
+  "description": "Website to draw together",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo 'test'",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ADFuji/lets_draw_together.git"
+  },
+  "keywords": [
+    "draw"
+  ],
+  "author": "Fuji",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ADFuji/lets_draw_together/issues"
+  },
+  "homepage": "https://github.com/ADFuji/lets_draw_together#readme",
+  "dependencies": {
+    "bluebird": "^3.7.2",
+    "mongoose": "^6.6.3",
+    "socket.io": "^4.5.2"
+  }
+}
