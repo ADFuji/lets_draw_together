@@ -22,11 +22,8 @@ app.use("/dots", dotsRouter)
 const connect = require("./dbconnect")
 
 io.on('connection', (socket)=>{
-    console.log('new connection', socket.id)
-
     socket.on('new points', (data)=>{
         socket.broadcast.emit('new points',data)
-        console.log(data)
         connect.then(db=>{
             let paquet = new Data({
                 function:data.function,
