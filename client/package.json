@@ -1,0 +1,21 @@
+{
+  "name": "lets_draw_together",
+  "version": "0.0.1",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"test\"",
+    "start": "sass ./src/stylesheet/input/login.scss ./src/stylesheet/login.css && electron ."
+  },
+  "author": "Fuji",
+  "license": "MIT",
+  "dependencies": {
+    "babel": "^6.23.0",
+    "babel-core": "^6.26.3",
+    "electron": "^21.0.1",
+    "socket.io": "^4.5.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.19.3"
+  }
+}

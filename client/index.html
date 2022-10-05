@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <link rel="stylesheet" href="./src/stylesheet/main.css">
+    <link rel="stylesheet" href="./src/stylesheet/login.css">
+    <meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'">
+    <title>Let's Draw Together</title>
+  </head>
+  <body>
+    <header>
+        <h3 id="name"></h3>
+    </header>
+    <!--
+    <main id="login_page">
+        <section id="try_login">
+            <div id="wrong_password">
+                <p>Mauvais mot de passe/login<br>veuillez reéssayer</p>
+            </div>
+            <div id="description">
+                <h1>Let's Draw Together!</h1>
+                <p>
+                    Déssinez avec d'autres perssones en temps réel!
+                </p>
+            </div>
+            <form>
+                <h1>Se connecter</h1>
+                <input type="text" id="username" name="username" placeholder="Username"><br>
+                <input type="password" id="password" name="password" placeholder="Password"><br>
+                <button type="submit" id="login">Login</button>
+            </form>
+        </section>
+        <section id="login_succes">
+            <article>
+                <h3>Vous êtes connecté</h3>
+                <p>Vous pouvez maintenant dessiner!</p>
+            </article>
+        </section>
+    </main>-->
+    <main id="main_page">
+        <div id="menu"><p id="info"></p></div>
+        <canvas id="lets_draw" width="500px" height="500px" style="border: 1px solid black; border-radius: 1rem; margin-left: 10%;"></canvas>
+    </main>
+  </body>
+  <!--
+
+  <script src="./node_modules/socket.io/client-dist/socket.io.js"></script>
+  <script type="module" src="./src/scripts/socket.js"></script>-->
+  <script src="./src/scripts/renderer.js"></script>
+</html>

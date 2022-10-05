@@ -1,0 +1,10 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+header{
+    display: none;
+}
+#main_page{
+    /*display: none;*/
+}
