@@ -1,4 +1,5 @@
-class Square{
+import {Tool} from "../Tool"
+export class Square{
     constructor(x,y,size){
         this.x = x;
         this.y = y;
@@ -23,4 +24,3 @@ class Square{
     }
 
 }
-module.exports = Square

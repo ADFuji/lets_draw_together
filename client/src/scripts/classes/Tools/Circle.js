@@ -1,4 +1,5 @@
-class Circle{
+import {Tool} from "./Tool.js"
+export class Circle{
     constructor(x, y, size, color){
         this.x = x;
         this.y = y;
@@ -24,4 +25,3 @@ class Circle{
     }
 
 }
-module.exports = Circle

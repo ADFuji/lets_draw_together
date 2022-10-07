@@ -4,7 +4,7 @@ const Canvas = versions.canvas()
 const brushmenu = new BrushMenu(document.getElementById("menu"));
 brushmenu.showMenu();
 const canvas = new Canvas(document.getElementById("lets_draw"), brushmenu);
-*/
+
 class Brush{
     constructor(id){
         this.id = id
@@ -253,4 +253,8 @@ class Canvas{
 
 }
 
-let canvas = new Canvas(document.getElementById('lets_draw'))
+let canvas = new Canvas(document.getElementById('lets_draw'))*/
+
+import { Canvas } from './classes/Canvas.js';
+import { BrushsMenu } from './/classes/Menu/BrushsMenu.js';
+let canvas = new Canvas(document.getElementById('lets_draw'));

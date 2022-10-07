@@ -1,5 +1,5 @@
 //class to create a tool to move the view
-import Tool from './Tool.js'
+import {Tool} from './Tool.js'
 class Move extends Tool{
     constructor(id){
         super(id, "Move", "Tool")

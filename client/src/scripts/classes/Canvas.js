@@ -1,5 +1,7 @@
-class Canvas{
+import { BrushsMenu } from "../classes/Menu/BrushsMenu.js";
+export class Canvas{
     constructor(canvas){
+        this.down =false;
         this.canvas = canvas;
         this.context = canvas.getContext("2d");
         this.context.imageSmoothingEnabled = false;
@@ -7,17 +9,8 @@ class Canvas{
         this.context.webkitImageSmoothingEnabled = false;
         this.context.msImageSmoothingEnabled = false;
         this.context.imageSmoothingEnabled = false;
-        this.currentBrush = null;
-    }
-    constructor(canvas, brush){
-        this.canvas = canvas;
-        this.context = canvas.getContext("2d");
-        this.context.imageSmoothingEnabled = false;
-        this.context.mozImageSmoothingEnabled = false;
-        this.context.webkitImageSmoothingEnabled = false;
-        this.context.msImageSmoothingEnabled = false;
-        this.context.imageSmoothingEnabled = false;
-        this.currentBrush = brush;
+        this.brushmenu = new BrushsMenu(document.querySelector('#main_page'))
+        this.brushmenu.showMenu()
         this.addListeners();
     }
     clear(){
@@ -48,9 +41,6 @@ class Canvas{
         this.context.strokeStyle = color;
         this.context.stroke();
     }
-    drawBrush(brush){
-        brush.draw(this.context);
-    }
     setPixel(x, y, color){
         this.context.fillStyle = color;
         this.context.fillRect(x, y, 1, 1);
@@ -80,41 +70,56 @@ class Canvas{
         return {x, y};
     }
     getTouchPosition(event){
+        console.log(event)
         let rect = this.canvas.getBoundingClientRect();
-        let x = event.touches[0].clientX - rect.left;
-        let y = event.touches[0].clientY - rect.top;
+        let x = event.changedTouches[0].clientX - rect.left;
+        let y = event.changedTouches[0].clientY - rect.top;
         return {x, y};
     }
     setCurrentBrush(brush){
         this.currentBrush = brush;
     }
     //add event listeners to draw on the canvas with the current brush
+    
     addListeners(){
         this.canvas.addEventListener("mousedown", (event) => {
+            this.down = true;
             let position = this.getMousePosition(event);
-            this.currentBrush.start(position.x, position.y);
+            this.brushmenu.getCurrentBrush().start(position.x, position.y);
         });
         this.canvas.addEventListener("mousemove", (event) => {
             let position = this.getMousePosition(event);
-            this.currentBrush.move(position.x, position.y);
+            if(this.down){
+                console.log(this.currentBrush)
+            this.brushmenu.getCurrentBrush().draw(this.context, position.x, position.y);}
         });
         this.canvas.addEventListener("mouseup", (event) => {
+            this.down = false;
             let position = this.getMousePosition(event);
-            this.currentBrush.end(position.x, position.y, this.context);
+            this.brushmenu.getCurrentBrush().end(position.x, position.y, this.context);
         });
         this.canvas.addEventListener("touchstart", (event) => {
-            let position = this.getTouchPosition(event);
-            this.currentBrush.start(position.x, position.y);
+            //let position = this.getTouchPosition(event);
+            this.down = true;
+            //console.log(event)
+            //this.brushmenu.getCurrentBrush().start(position.x, position.y);
         });
         this.canvas.addEventListener("touchmove", (event) => {
-            let position = this.getTouchPosition(event);
-            this.currentBrush.move(position.x, position.y);
+            event.preventDefault();
+            if(this.down){
+                console.log(event)
+                let position = this.getTouchPosition(event);
+                this.brushmenu.getCurrentBrush().draw(this.context, position.x, position.y);
+            }
         });
         this.canvas.addEventListener("touchend", (event) => {
-            let position = this.getTouchPosition(event);
-            this.currentBrush.end(position.x, position.y, this.context);
+            this.down = false;
+            //let position = this.getTouchPosition(event);
+            console.log(this.getTouchPosition(event))
+            //this.brushmenu.getCurrentBrush().end(position.x, position.y, this.context);
         });
-    }
+        //event listener to draw when this.down==true
+     
 
+    }
 }
-module.exports = {Canvas};

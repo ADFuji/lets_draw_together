@@ -1,6 +1,7 @@
-import Tool from "../Tool"
-class Brush extends Tool{
+import {Tool} from "./Tool.js"
+export class Brush extends Tool{
     constructor(id){
+        super(id, "Brush", "Tool")
         this.id = id
         this.color = 'black'
         this.size = 1
@@ -28,4 +29,3 @@ class Brush extends Tool{
         })
     }  
 }
-module.exports = Brush

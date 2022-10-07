@@ -1,4 +1,4 @@
-class Tool{
+export class Tool{
     constructor(id, name, type){
         this.id = id
         this.name = name
@@ -15,4 +15,3 @@ class Tool{
         this.position.push([x,y])
     }
 }
-export default Tool

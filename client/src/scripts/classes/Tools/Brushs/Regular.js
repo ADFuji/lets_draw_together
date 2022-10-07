@@ -1,10 +1,10 @@
-import Brush from './Brush.js'
-class Regular extends Brush{
-    constructor(){
+import {Brush} from "../Brush.js";
+export class Regular extends Brush{
+    constructor(id){
         super(id)
         this.type = 'regular'
     }
-    draw(ctx){
+    draw(ctx,x,y){
         ctx.beginPath();
         ctx.arc(x, y, this.size, 0, 2 * Math.PI);
         ctx.fillStyle = this.color;
@@ -12,4 +12,3 @@ class Regular extends Brush{
     }
 
 }
-module.exports = Regular
