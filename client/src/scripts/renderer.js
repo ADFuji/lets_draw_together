@@ -137,7 +137,7 @@ class Canvas{
         this.context.webkitImageSmoothingEnabled = false;
         this.context.msImageSmoothingEnabled = false;
         this.context.imageSmoothingEnabled = false;
-        this.brushmenu = new BrushsMenu(document.getElementById('menu'))
+        this.brushmenu = new BrushsMenu(document.querySelector('#main_page'))
         this.brushmenu.showMenu()
         this.addListeners();
     }
