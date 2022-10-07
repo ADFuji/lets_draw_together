@@ -6,7 +6,7 @@ export class BrushsMenu{
             x: 0,
             y: 0
         }
-        this.brushs = [new Regular(1), new Exponnential(2), new Regular(3)]
+        this.brushs = [new Regular(1), new Exponnential(2)]
         this.current_brush = this.brushs[0]
         this.createMenu(div)
         this.fillMenu()
