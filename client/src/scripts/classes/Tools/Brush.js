@@ -1,7 +1,7 @@
 import {Tool} from "./Tool.js"
 export class Brush extends Tool{
-    constructor(){
-        super("Brush", "Brush")
+    constructor(name){
+        super(name, "Brush")
         this.color = 'black'
         this.size = 1
         this.position = []
@@ -13,7 +13,8 @@ export class Brush extends Tool{
         this.size = size
     }
     draw(ctx){
-        console.log('draw')
+        ctx.fillStyle = this.color;
+        ctx.strokeStyle = this.color;
     }
     start(x,y){
         this.position = [[x,y]]

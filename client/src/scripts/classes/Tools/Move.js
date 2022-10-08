@@ -4,7 +4,6 @@ export class Move extends Tool{
     constructor(id){
         super("Move", "Tool")
         this.lastPosition = [0,0];
-        this.preCursor = document.querySelector('body').style.cursor
         
     }
     start(x,y){

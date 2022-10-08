@@ -257,4 +257,8 @@ let canvas = new Canvas(document.getElementById('lets_draw'))*/
 
 import { Canvas } from './classes/Canvas.js';
 import { BrushsMenu } from './/classes/Menu/BrushsMenu.js';
-let canvas = new Canvas(document.getElementById('lets_draw'));
+import { MTools } from './classes/Menu/MTools.js';
+import { MColorThickness } from './classes/Menu/MColorThickness.js';
+let mtools = new MTools(document.querySelector('#main_page'));
+let mcolorthickness = new MColorThickness(document.querySelector('#main_page'),mtools);
+let canvas = new Canvas(document.getElementById('lets_draw'), mtools, mcolorthickness);

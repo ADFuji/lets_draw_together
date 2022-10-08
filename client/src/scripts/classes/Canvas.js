@@ -1,6 +1,7 @@
 import { BrushsMenu } from "../classes/Menu/BrushsMenu.js";
+import { MTools } from "../classes/Menu/MTools.js";
 export class Canvas{
-    constructor(canvas){
+    constructor(canvas, mtools, mcolorthickness){
         this.down =false;
         this.canvas = canvas;
         this.canvas.style.left = 0
@@ -11,10 +12,9 @@ export class Canvas{
         this.context.webkitImageSmoothingEnabled = false;
         this.context.msImageSmoothingEnabled = false;
         this.context.imageSmoothingEnabled = false;
-        this.brushmenu = new BrushsMenu(document.querySelector('#main_page'))
-        this.brushmenu.showMenu()
-        this.addListeners();
-        
+        this.mtools = mtools;
+        this.mcolorthickness = mcolorthickness;
+        this.addListeners()
     }
     clear(){
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -84,33 +84,42 @@ export class Canvas{
         let y = event.changedTouches[0].clientY - rect.top;
         return {x, y};
     }
-    setCurrentBrush(brush){
-        this.currentBrush = brush;
+    setSelectedTool(tool){
+        console.log(tool.type)
+        this.selectedTool = tool;
     }
     //add event listeners to draw on the canvas with the current brush
     
     addListeners(){
+        console.log(this.mtools)
+        this.canvas.addEventListener('click', (event) => {
+            let mousePosition = this.getMousePosition(event);
+            if(this.mtools.getSelectedTool().name != "Exponnential"){
+            this.mtools.getSelectedTool().draw(this.context, mousePosition.x, mousePosition.y);}
+        });
         this.canvas.addEventListener("mousedown", (event) => {
+            //if its not right click
+            if(event.button != 2){
             this.down = true;
             let position = this.getMousePosition(event);
-            this.brushmenu.getCurrentBrush().start(position.x, position.y);
+            this.mtools.getSelectedTool().start(position.x, position.y);}
         });
         this.canvas.addEventListener("mousemove", (event) => {
             let position = this.getMousePosition(event);
             if(this.down){
-                console.log(this.currentBrush)
-            if(this.brushmenu.getCurrentBrush().type=="Tool"){
-                this.brushmenu.getCurrentBrush().move(position.x, position.y, this.canvas);
-            }
-            else{
-                this.brushmenu.getCurrentBrush().draw(this.context, position.x, position.y);
-            }
+                console.log(this.mtools.getSelectedTool().type)
+                if(this.mtools.getSelectedTool().type=="Tool"){
+                    this.mtools.getSelectedTool().move(position.x, position.y, this.canvas);
+                }
+                else{
+                    this.mtools.getSelectedTool().draw(this.context, position.x, position.y);
+                }
         }
         });
         this.canvas.addEventListener("mouseup", (event) => {
             this.down = false;
             let position = this.getMousePosition(event);
-            this.brushmenu.getCurrentBrush().end(position.x, position.y, this.context);
+            this.mtools.getSelectedTool().end(position.x, position.y, this.context);
         });
         this.canvas.addEventListener("touchstart", (event) => {
             this.down = true;
@@ -135,7 +144,29 @@ export class Canvas{
             let position = this.getMousePosition(event);
             this.brushmenu.getCurrentBrush().end(position.x, position.y, this.context);
         });
+        //display mcolorthickness menu when right clicking
+        this.canvas.addEventListener("contextmenu", (event) => {
+            event.preventDefault();
+            this.mcolorthickness.showMenu(event.clientX, event.clientY);
+        });
+        //hide mcolorthickness menu when clicking out mcolorthickness menu
+        document.addEventListener("click", (event) => {
+            console.log(event.target)
+            if(this.down || event.target != this.mcolorthickness.menu && event.target != this.mcolorthickness.color && event.target != this.mcolorthickness.thickness){
+                this.mcolorthickness.hideMenu();
+            }
+        });
         /*
+        //cancel draw when out of canvas
+        document.addEventListener("mouseleave", (event) => {
+            this.in = false;
+            this.down = false;
+        });
+        //draw when in canvas
+        document.addEventListener("mouseenter", (event) => {
+            this.in = true;
+        });
+        
         //move the canvas with the mouse
         this.canvas.addEventListener("mousedown", (event) => {
             if(this.brushmenu.getCurrentBrush().name=="Move"){
