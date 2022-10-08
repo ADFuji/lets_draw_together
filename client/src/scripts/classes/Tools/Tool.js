@@ -1,6 +1,8 @@
 export class Tool{
-    constructor(id, name, type){
-        this.id = id
+    static id = 1
+    constructor(name, type){
+        this.id = Tool.id
+        Tool.id++
         this.name = name
         this.type = type
         this.position = []

@@ -1,8 +1,7 @@
 import {Tool} from "./Tool.js"
 export class Brush extends Tool{
-    constructor(id){
-        super(id, "Brush", "Tool")
-        this.id = id
+    constructor(){
+        super("Brush", "Brush")
         this.color = 'black'
         this.size = 1
         this.position = []

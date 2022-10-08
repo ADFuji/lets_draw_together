@@ -3,6 +3,8 @@ export class Canvas{
     constructor(canvas){
         this.down =false;
         this.canvas = canvas;
+        this.canvas.style.left = 0
+        this.canvas.style.top = 0
         this.context = canvas.getContext("2d");
         this.context.imageSmoothingEnabled = false;
         this.context.mozImageSmoothingEnabled = false;
@@ -12,6 +14,7 @@ export class Canvas{
         this.brushmenu = new BrushsMenu(document.querySelector('#main_page'))
         this.brushmenu.showMenu()
         this.addListeners();
+        
     }
     clear(){
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -62,6 +65,11 @@ export class Canvas{
     setAllPixels(data){
         this.context.putImageData(data, 0, 0);
     }
+    fillCanvas(color){
+        this.context.fillStyle = color;
+        this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        this.context.fill();
+    }
     //get mouse and touch input and position on the canvas
     getMousePosition(event){
         let rect = this.canvas.getBoundingClientRect();
@@ -91,7 +99,13 @@ export class Canvas{
             let position = this.getMousePosition(event);
             if(this.down){
                 console.log(this.currentBrush)
-            this.brushmenu.getCurrentBrush().draw(this.context, position.x, position.y);}
+            if(this.brushmenu.getCurrentBrush().type=="Tool"){
+                this.brushmenu.getCurrentBrush().move(position.x, position.y, this.canvas);
+            }
+            else{
+                this.brushmenu.getCurrentBrush().draw(this.context, position.x, position.y);
+            }
+        }
         });
         this.canvas.addEventListener("mouseup", (event) => {
             this.down = false;
@@ -99,27 +113,52 @@ export class Canvas{
             this.brushmenu.getCurrentBrush().end(position.x, position.y, this.context);
         });
         this.canvas.addEventListener("touchstart", (event) => {
-            //let position = this.getTouchPosition(event);
             this.down = true;
-            //console.log(event)
-            //this.brushmenu.getCurrentBrush().start(position.x, position.y);
+            let position = this.getMousePosition(event);
+            this.brushmenu.getCurrentBrush().start(position.x, position.y);
         });
         this.canvas.addEventListener("touchmove", (event) => {
             event.preventDefault();
+            let position = this.getMousePosition(event);
             if(this.down){
-                console.log(event)
-                let position = this.getTouchPosition(event);
+                console.log(this.currentBrush)
+            if(this.brushmenu.getCurrentBrush().type=="Tool"){
+                this.brushmenu.getCurrentBrush().move(position.x, position.y, this.canvas);
+            }
+            else{
                 this.brushmenu.getCurrentBrush().draw(this.context, position.x, position.y);
             }
+        }
         });
         this.canvas.addEventListener("touchend", (event) => {
             this.down = false;
-            //let position = this.getTouchPosition(event);
-            console.log(this.getTouchPosition(event))
-            //this.brushmenu.getCurrentBrush().end(position.x, position.y, this.context);
+            let position = this.getMousePosition(event);
+            this.brushmenu.getCurrentBrush().end(position.x, position.y, this.context);
         });
-        //event listener to draw when this.down==true
-     
+        /*
+        //move the canvas with the mouse
+        this.canvas.addEventListener("mousedown", (event) => {
+            if(this.brushmenu.getCurrentBrush().name=="Move"){
+            let position = this.getMousePosition(event);
+            this.lastPosition = position;
+            this.moving = true;}
+        });
+        this.canvas.addEventListener("mousemove", (event) => {
+            if(this.moving){
+                let position = this.getMousePosition(event);
+                let dx = position.x - this.lastPosition.x;
+                let dy = position.y - this.lastPosition.y;
+                this.canvas.style.left = `${this.canvas.offsetLeft + dx}px`;
+                this.canvas.style.top = `${this.canvas.offsetTop + dy}px`;
+                console.log(this.canvas.style.left, this.canvas.offsetLeft)
+
+                this.lastPosition = position;
+            }
+        });
+        this.canvas.addEventListener("mouseup", (event) => {
+            this.moving = false;
+        });*/
+
 
     }
 }
