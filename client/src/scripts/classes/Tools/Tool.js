@@ -29,4 +29,7 @@ export class Tool{
     {
         return this.type
     }
+    getPosition(){
+        return this.position
+    }
 }

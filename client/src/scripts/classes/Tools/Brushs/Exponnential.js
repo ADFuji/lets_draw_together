@@ -9,6 +9,7 @@ export class Exponnential extends Brush{
         ctx.strokeStyle = this.color;
         ctx.lineWidth = 1;
         ctx.stroke();
+        ctx.closePath();
         this.i=this.i>100?100:this.i+.4
     }
     start(x,y){

@@ -17,15 +17,18 @@ export class Brush extends Tool{
         ctx.strokeStyle = this.color;
     }
     start(x,y){
+        this.position.clear()
         this.position = [[x,y]]
     }
     move(x,y){
         this.position.push([x,y])
     }
     end(x,y,ctx){
-        this.position.push([x,y])
+        this.position.clear()
+    }
+    drawAll(ctx){
         this.position.forEach((pos) => {
             this.draw(ctx, pos[0], pos[1])
         })
-    }  
+    }
 }

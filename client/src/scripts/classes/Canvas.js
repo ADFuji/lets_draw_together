@@ -1,8 +1,7 @@
-import { BrushsMenu } from "../classes/Menu/BrushsMenu.js";
-import { MTools } from "../classes/Menu/MTools.js";
 export class Canvas{
-    constructor(canvas, mtools, mcolorthickness){
+    constructor(socket, canvas, mtools, mcolorthickness){
         this.down =false;
+        this.socket = socket;
         this.canvas = canvas;
         this.canvas.style.left = 0
         this.canvas.style.top = 0
@@ -14,13 +13,37 @@ export class Canvas{
         this.context.imageSmoothingEnabled = false;
         this.mtools = mtools;
         this.mcolorthickness = mcolorthickness;
-        this.addListeners()
+        this.addListeners();
+        this.socket.init_data.forEach((plot) => {
+            this.socket.log("--- init_data ---")
+            this.socket.log(plot)
+            switch(plot.brush_id){
+                case '1':
+                    this.context.beginPath();
+                    let p = plot.coordinates[0]
+                    this.context.moveTo(p[0], p[1]);
+                    plot.coordinates.forEach((coord) => {
+                        this.context.lineTo(coord[0], coord[1]);
+                        p = coord
+                        if(coord[0]=='end'){
+                            //set the thickness
+                            this.context.lineWidth = plot.thickness;
+                            this.context.strokeStyle = plot.color;
+                            this.context.stroke();
+                            this.context.closePath();
+                        }
+                    })
+                    
+                    break;
+            }
+        })
+    }
+    //draw on the canvas with coords int init_data
+    draw(plot){
+        
     }
     clear(){
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    }
-    drawImage(image, x, y, width, height){
-        this.context.drawImage(image, x, y, width, height);
     }
     drawText(text, x, y, color, font){
         this.context.fillStyle = color;
@@ -84,25 +107,24 @@ export class Canvas{
         let y = event.changedTouches[0].clientY - rect.top;
         return {x, y};
     }
-    setSelectedTool(tool){
-        console.log(tool.type)
-        this.selectedTool = tool;
-    }
     //add event listeners to draw on the canvas with the current brush
     
     addListeners(){
-        console.log(this.mtools)
         this.canvas.addEventListener('click', (event) => {
             let mousePosition = this.getMousePosition(event);
             if(this.mtools.getSelectedTool().name != "Exponnential"){
-            this.mtools.getSelectedTool().draw(this.context, mousePosition.x, mousePosition.y);}
+                this.mtools.getSelectedTool().draw(this.context, mousePosition.x, mousePosition.y);
+            }
+            this.mtools.getSelectedTool().position
+
         });
         this.canvas.addEventListener("mousedown", (event) => {
             //if its not right click
             if(event.button != 2){
-            this.down = true;
-            let position = this.getMousePosition(event);
-            this.mtools.getSelectedTool().start(position.x, position.y);}
+                this.down = true;
+                let position = this.getMousePosition(event);
+                this.mtools.getSelectedTool().start(position.x, position.y);
+            }
         });
         this.canvas.addEventListener("mousemove", (event) => {
             let position = this.getMousePosition(event);
@@ -113,13 +135,24 @@ export class Canvas{
                 }
                 else{
                     this.mtools.getSelectedTool().draw(this.context, position.x, position.y);
+                    this.mtools.getSelectedTool().move(position.x, position.y);
                 }
         }
         });
         this.canvas.addEventListener("mouseup", (event) => {
             this.down = false;
             let position = this.getMousePosition(event);
+            let pos = (this.mtools.getSelectedTool().getPosition().length>0)?this.mtools.getSelectedTool().getPosition():[[mousePosition.x,mousePosition.y],[mousePosition.x,mousePosition.y]]
+            pos.push(['end', 'end'])
+            this.socket.emit('new_plot', {
+                username: this.socket.getUsername(),
+                position: pos,
+                brush: this.mtools.getSelectedTool().id,
+                color: this.mtools.getSelectedTool().color,
+                size: this.mtools.getSelectedTool().size
+            })
             this.mtools.getSelectedTool().end(position.x, position.y, this.context);
+            this.socket.log(this.mtools.getSelectedTool().getPosition())
         });
         this.canvas.addEventListener("touchstart", (event) => {
             this.down = true;
@@ -154,42 +187,9 @@ export class Canvas{
             console.log(event.target)
             if(this.down || event.target != this.mcolorthickness.menu && event.target != this.mcolorthickness.color && event.target != this.mcolorthickness.thickness){
                 this.mcolorthickness.hideMenu();
+                this.mtools.getSelectedTool().setColor(this.mcolorthickness.getColor())
+                this.mtools.getSelectedTool().setSize(this.mcolorthickness.getThickness())
             }
         });
-        /*
-        //cancel draw when out of canvas
-        document.addEventListener("mouseleave", (event) => {
-            this.in = false;
-            this.down = false;
-        });
-        //draw when in canvas
-        document.addEventListener("mouseenter", (event) => {
-            this.in = true;
-        });
-        
-        //move the canvas with the mouse
-        this.canvas.addEventListener("mousedown", (event) => {
-            if(this.brushmenu.getCurrentBrush().name=="Move"){
-            let position = this.getMousePosition(event);
-            this.lastPosition = position;
-            this.moving = true;}
-        });
-        this.canvas.addEventListener("mousemove", (event) => {
-            if(this.moving){
-                let position = this.getMousePosition(event);
-                let dx = position.x - this.lastPosition.x;
-                let dy = position.y - this.lastPosition.y;
-                this.canvas.style.left = `${this.canvas.offsetLeft + dx}px`;
-                this.canvas.style.top = `${this.canvas.offsetTop + dy}px`;
-                console.log(this.canvas.style.left, this.canvas.offsetLeft)
-
-                this.lastPosition = position;
-            }
-        });
-        this.canvas.addEventListener("mouseup", (event) => {
-            this.moving = false;
-        });*/
-
-
     }
 }
